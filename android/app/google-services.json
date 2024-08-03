@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "820650781605",
+    "project_id": "newbeams-99d51",
+    "storage_bucket": "newbeams-99d51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820650781605:android:ec8994836f66f9720f964c",
+        "android_client_info": {
+          "package_name": "com.ccsclientwbec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820650781605-cm6q4gqldl7bdn4hdbhmk40k6pra3lm0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ccsclientwbec",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "820650781605-l9l1fmj1tj0icic0ovkld3q2o8souslj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQM9aUZio2NG_W2qDPnrNGLXWspg4OCQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "820650781605-l9l1fmj1tj0icic0ovkld3q2o8souslj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
