@@ -67,6 +67,16 @@ const AllEvents = props => {
     }
   }
 
+  // save activity id data
+  async function saveActivityData(value) {
+    const jsonString = JSON.stringify(value);
+    try {
+      await AsyncStorage.setItem('saveActivity', jsonString);
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
+  }
+
   async function geLogintData(key) {
     try {
       const value = await AsyncStorage.getItem(key);
@@ -122,6 +132,7 @@ const AllEvents = props => {
           is_macher: item?.is_matchmaker,
           event_user_id: event_user_id,
         });
+        await saveActivityData({activity: item?.activities});
       }
     }
   };

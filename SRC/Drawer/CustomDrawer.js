@@ -180,7 +180,7 @@ const CustomDrawer = ({navigation}) => {
           </View>
 
           <View style={[styles.listnameStyle, {marginTop: hp(4)}]}>
-            <TouchableOpacity onPress={() => navigatorHandler('Events')}>
+            <TouchableOpacity onPress={() => navigatorHandler('AllEvents')}>
               <View style={{flexDirection: 'row', marginLeft: hp(3)}}>
                 <View style={{}}>
                   <Icon
@@ -198,7 +198,7 @@ const CustomDrawer = ({navigation}) => {
               </View>
             </TouchableOpacity>
           </View>
-          <View style={[styles.listnameStyle, {marginTop: hp(1.5)}]}>
+          {/* <View style={[styles.listnameStyle, {marginTop: hp(1.5)}]}>
             <TouchableOpacity onPress={() => navigatorHandler('Events')}>
               <View style={{flexDirection: 'row', marginLeft: hp(3)}}>
                 <View style={{}}>
@@ -216,7 +216,7 @@ const CustomDrawer = ({navigation}) => {
                 </View>
               </View>
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={[styles.listnameStyle, {marginTop: hp(1.5)}]}>
             <TouchableOpacity onPress={() => navigatorHandler('Exibitor')}>
               <View style={{flexDirection: 'row', marginLeft: hp(3)}}>
@@ -272,7 +272,7 @@ const CustomDrawer = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View style={[styles.listnameStyle, {marginTop: hp(1.5)}]}>
-            <TouchableOpacity onPress={() => navigatorHandler('Attendees')}>
+            <TouchableOpacity onPress={() => navigatorHandler('Sponsor')}>
               <View style={{flexDirection: 'row', marginLeft: hp(3)}}>
                 <View style={{}}>
                   <Icon
@@ -284,7 +284,7 @@ const CustomDrawer = ({navigation}) => {
                 </View>
                 <View>
                   <Text style={[styles.textlistStyle, {paddingLeft: hp(2)}]}>
-                    Survey
+                    Sponsors
                   </Text>
                 </View>
               </View>
@@ -415,7 +415,7 @@ const CustomDrawer = ({navigation}) => {
               <View>
                 <Text
                   style={{marginLeft: hp(3), fontSize: hp(1.5), color: '#fff'}}>
-                  {appVersionData?.user?.response?.version < '1.0'
+                  {appVersionData?.user?.response?.version < '1.03'
                     ? appVersionData?.user?.response?.message
                     : ''}
                 </Text>

@@ -5,8 +5,11 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  FlatList,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import MainHeader from '../Components/Headers/MainHeader';
 import Search from '../Components/Search';
 import {
@@ -14,299 +17,133 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import fontFamily from '../Styles/fontFamily';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch, useSelector} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
+import {speakerHandler} from '../features/speaker/speakerSlice';
+import colors from '../Styles/colors';
 const Sponsor = props => {
+  const dispatch = useDispatch();
+  const speakerData = useSelector(state => state.speakerState);
+  // console.log('sponsor 2===', speakerData?.user?.response);
+  async function getData(key) {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      if (value !== null) {
+        console.log('Data retrieved successfully:', value);
+        const parsedData = JSON.parse(value);
+
+        // setData(parsedData);
+        // {"user_id":parsedData.user_id,"event_id":parsedData.event_id,"type_id":1}
+        dispatch(
+          speakerHandler({
+            user_id: parsedData.user_id,
+            event_id: parsedData.event_id,
+            type_id: 2,
+          }),
+        );
+        // console.log('here is feedback screen data', parsedData);
+        return parsedData;
+      }
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+    }
+  }
+  useFocusEffect(
+    useCallback(() => {
+      getData('userSession');
+      // dispatch(resetState());
+    }, []),
+  );
+  useEffect(() => {
+    getData('userSession');
+  }, []);
+
+  const renderItem = ({item, index}) => {
+    return (
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('ExibitoeDetail')}
+        style={[styles.cardImgWrapper]}>
+        <Image
+          source={{uri: item?.image_name}}
+          resizeMode="contain"
+          style={styles.cardImg}
+        />
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 0.1}}>
+        <Modal
+          visible={speakerData?.isLoading}
+          transparent={true}
+          animationType="fade">
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}>
+            <View
+              style={{
+                width: wp(25),
+                height: hp(12.5),
+                backgroundColor: 'white',
+                borderRadius: hp(1),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <ActivityIndicator size="large" color="#cdcdcd" />
+            </View>
+          </View>
+        </Modal>
         <MainHeader
           text={'Sponsors'}
           onpressBtn={() => props.navigation.goBack()}
         />
       </View>
       <View style={{flex: 0.03}}></View>
-      <View style={{flex: 0.1,marginTop:hp(0)}}>
+      <View style={{flex: 0.1, marginTop: hp(0)}}>
         <Search />
       </View>
       <View
         style={{
           flex: 0.8,
-          //   backgroundColor: 'red',
+          // backgroundColor: 'red',
           marginHorizontal: hp(2.5),
-          flexDirection: 'row',
           marginTop: hp(0),
+          // flexDirection:'row'
         }}>
-        <ScrollView>
-          <View style={{height: hp(35)}}>
-            <View
+        <View style={{flexDirection: 'row'}}>
+          <FlatList
+            data={speakerData?.user?.response?.events}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal={true}
+          />
+        </View>
+        {speakerData?.user?.response?.success === 0 && (
+          <View
+            style={{
+              flex: 0.1,
+              height: hp(15),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
               style={{
-                flex: 0.2,
-                // backgroundColor: 'red',
-                justifyContent: 'center',
+                color: colors.grayDescColor,
+                fontSize: hp(2),
+                fontStyle: 'italic',
+                fontFamily: fontFamily.robotoBold,
               }}>
-              <Text style={{color: 'gray', fontSize: hp(2.5), fontWeight: '500',fontFamily:fontFamily.robotoMedium}}>
-                Dimond
-              </Text>
-              <View
-                style={{
-                  width: wp(20),
-                  height: hp(0.15),
-                  backgroundColor: '#000',
-                }}></View>
-            </View>
-            <View
-              style={{
-                flex: 0.37,
-                // backgroundColor: 'orange',
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logoaws'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logothree'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={styles.cardImgWrapper}>
-                <Image
-                  source={{uri: 'logohonda'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{flex: 0.03}}></View>
-            <View
-              style={{
-                flex: 0.37,
-                // backgroundColor: 'orange',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                // marginVertical:hp(0)
-              }}>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logoaws'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logothree'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={styles.cardImgWrapper}>
-                <Image
-                  source={{uri: 'logohonda'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-            </View>
+              No Data Available.
+            </Text>
           </View>
-          <View style={{height: hp(35)}}>
-            <View
-              style={{
-                flex: 0.2,
-                // backgroundColor: 'red',
-                justifyContent: 'center',
-              }}>
-              <Text style={{color: '#FFD700', fontSize: hp(2.5), fontWeight: '500',fontFamily:fontFamily.robotoMedium}}>
-                Gold
-              </Text>
-              <View
-                style={{
-                  width: wp(20),
-                  height: hp(0.15),
-                  backgroundColor: '#000',
-                }}></View>
-            </View>
-            <View
-              style={{
-                flex: 0.37,
-                // backgroundColor: 'orange',
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logoaws'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logothree'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={styles.cardImgWrapper}>
-                <Image
-                  source={{uri: 'logohonda'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{flex: 0.03}}></View>
-            <View
-              style={{
-                flex: 0.37,
-                // backgroundColor: 'orange',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                // marginVertical:hp(0)
-              }}>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logoaws'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logothree'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={styles.cardImgWrapper}>
-                <Image
-                  source={{uri: 'logohonda'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{height: hp(35)}}>
-            <View
-              style={{
-                flex: 0.2,
-                // backgroundColor: 'red',
-                justifyContent: 'center',
-              }}>
-              <Text style={{color: 'silver', fontSize: hp(2.5), fontWeight: '500',fontFamily:fontFamily.robotoMedium}}>
-                Silver
-              </Text>
-              <View
-                style={{
-                  width: wp(20),
-                  height: hp(0.15),
-                  backgroundColor: '#000',
-                }}></View>
-            </View>
-            <View
-              style={{
-                flex: 0.37,
-                // backgroundColor: 'orange',
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logoaws'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logothree'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={styles.cardImgWrapper}>
-                <Image
-                  source={{uri: 'logohonda'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{flex: 0.03}}></View>
-            <View
-              style={{
-                flex: 0.37,
-                // backgroundColor: 'orange',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                // marginVertical:hp(0)
-              }}>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logoaws'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={[styles.cardImgWrapper]}>
-                <Image
-                  source={{uri: 'logothree'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('ExibitoeDetail')}
-                style={styles.cardImgWrapper}>
-                <Image
-                  source={{uri: 'logohonda'}}
-                  resizeMode="contain"
-                  style={styles.cardImg}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </ScrollView>
+        )}
       </View>
     </View>
   );
@@ -333,8 +170,10 @@ const styles = StyleSheet.create({
   },
   cardImgWrapper: {
     backgroundColor: '#fff',
-    flex: hp(0.33),
-    // height: hp(12),
+    // flex: hp(0.33),
+    flexDirection: 'row',
+    height: hp(12),
+    width: hp(13),
     marginRight: hp(1),
     borderColor: 'gray',
     borderWidth: 0.5,

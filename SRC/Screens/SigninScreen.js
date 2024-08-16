@@ -11,6 +11,8 @@ import {
   ToastAndroid,
   Modal,
   ActivityIndicator,
+  Alert,
+  Linking,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -18,12 +20,13 @@ import {
 } from 'react-native-responsive-screen';
 import {verifyEmailHandler} from '../features/login/emailSlice';
 import Ficon from 'react-native-fontawesome-pro';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ViewInput from '../Components/Headers/ViewInput';
 import fontFamily from '../Styles/fontFamily';
 import {useDispatch, useSelector} from 'react-redux';
 import colors from '../Styles/colors';
 import validator from 'validator';
+import VersionCheck from 'react-native-version-check';
 const SigninScreen = props => {
   const dispatch = useDispatch();
   const emailData = useSelector(state => state.emailState);
@@ -41,6 +44,11 @@ const SigninScreen = props => {
       // console.log("data==",verifyEmail?.payload?.response?.success);
       if (verifyEmail?.payload?.response?.success === 1) {
         props.navigation.navigate('SigninPassword', {email});
+      } else if (
+        verifyEmail?.payload?.response?.success === 0 &&
+        verifyEmail?.payload?.response?.show_signup == 'Y'
+      ) {
+        props.navigation.navigate('RegisterScreen', {email});
       } else {
         // props.navigation.navigate("RegisterScreen",{email});
         ToastAndroid.showWithGravity(
@@ -57,6 +65,36 @@ const SigninScreen = props => {
       );
     }
   };
+
+  useEffect(() => {
+    const checkForUpdate = async () => {
+      const currentVersion = '1.02';
+      const latestVersion = '1.03';
+
+      if (latestVersion > currentVersion) {
+        Alert.alert(
+          'Update Required',
+          'Please update the app to the latest version to continue.',
+          [
+            {
+              text: 'Update Now',
+              onPress: () => {
+                VersionCheck.getStoreUrl({appID: 'com.ccsclientwbec'}).then(
+                  url => {
+                    Linking.openURL(url);
+                  },
+                );
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+      }
+    };
+
+    checkForUpdate();
+  }, []);
+
   return (
     <View
       style={{

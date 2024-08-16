@@ -5,7 +5,7 @@ import {
 } from 'react-native-responsive-screen';
 import fontFamily from '../Styles/fontFamily';
 import colors from '../Styles/colors';
-import {speakerHandler} from '../features/speaker/speakerSlice'
+import {speakerHandler} from '../features/speaker/speakerSlice';
 import {
   View,
   Text,
@@ -20,11 +20,12 @@ import {
 } from 'react-native';
 import MainHeader from '../Components/Headers/MainHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
 const Exibitor = props => {
   const dispatch = useDispatch();
-  const speakerData=useSelector((state)=>state.speakerState);
+  const speakerData = useSelector(state => state.speakerState);
+  // console.log("speakerDa==",speakerData?.user?.response);
   async function getData(key) {
     try {
       const value = await AsyncStorage.getItem(key);
@@ -34,10 +35,16 @@ const Exibitor = props => {
 
         // setData(parsedData);
         // {"user_id":parsedData.user_id,"event_id":parsedData.event_id,"type_id":1}
-        dispatch(speakerHandler({"user_id":parsedData.user_id,"event_id":parsedData.event_id,"type_id":2}));
+        dispatch(
+          speakerHandler({
+            user_id: parsedData.user_id,
+            event_id: parsedData.event_id,
+            type_id: 3,
+          }),
+        );
         console.log('here is feedback screen data', parsedData);
         return parsedData;
-      } 
+      }
     } catch (error) {
       console.error('Error retrieving data:', error);
     }
@@ -46,130 +53,30 @@ const Exibitor = props => {
     useCallback(() => {
       getData('userSession');
       // dispatch(resetState());
-    }, [])
-  )
+    }, []),
+  );
   useEffect(() => {
     getData('userSession');
   }, []);
-  // const [data, setData] = useState([
-  //   {
-  //     image: 'logoaws',
-  //     backgroundColor: '#AFAFAF',
-  //     name: 'Gold',
-  //     disc: 'Aws',
-  //     bgcolor: '#FFF3B3',
-  //     btnColor: '#FFD703',
-  //   },
-  //   {
-  //     image: 'logohonda',
-  //     backgroundColor: '#FFD700',
-  //     name: 'Walls',
-  //     disc: 'Channal',
-  //     bgcolor: '#ECECEC',
-  //     btnColor: '#C4C4C4',
-  //   },
-  //   {
-  //     image: 'nesle',
-  //     backgroundColor: '#FFD700',
-  //     name: 'nesle',
-  //     disc: 'Nesle',
-  //     bgcolor: '#F0D9C2',
-  //     btnColor: '#F9AB5D',
-  //   },
-  //   {
-  //     image: 'oodi',
-  //     backgroundColor: '#FFD700',
-  //     name: 'audi',
-  //     disc: 'Audi',
-  //     bgcolor: '#F0D9C2',
-  //     btnColor: '#F9AB5D',
-  //   },
-  //   {
-  //     image: 'logothree',
-  //     backgroundColor: '#FFD700',
-  //     name: 'adidas',
-  //     disc: 'Adidas',
-  //     bgcolor: '#FFF3B3',
-  //     btnColor: '#FFD703',
-  //   },
-  //   {
-  //     image: 'channal',
-  //     backgroundColor: '#FFD700',
-  //     name: 'channal',
-  //     disc: 'Channal',
-  //     bgcolor: '#FFF3B3',
-  //     btnColor: '#FFD703',
-  //   },
-
-  //   {
-  //     image: 'logoaws',
-  //     backgroundColor: '#AFAFAF',
-  //     name: 'Gold',
-  //     disc: 'Aws',
-  //     bgcolor: '#FFF3B3',
-  //     btnColor: '#FFD703',
-  //   },
-  //   {
-  //     image: 'logohonda',
-  //     backgroundColor: '#FFD700',
-  //     name: 'Walls',
-  //     disc: 'Channal',
-  //     bgcolor: '#ECECEC',
-  //     btnColor: '#C4C4C4',
-  //   },
-  //   {
-  //     image: 'nesle',
-  //     backgroundColor: '#FFD700',
-  //     name: 'nesle',
-  //     disc: 'Nesle',
-  //     bgcolor: '#F0D9C2',
-  //     btnColor: '#F9AB5D',
-  //   },
-  //   {
-  //     image: 'oodi',
-  //     backgroundColor: '#FFD700',
-  //     name: 'audi',
-  //     disc: 'Audi',
-  //     bgcolor: '#F0D9C2',
-  //     btnColor: '#F9AB5D',
-  //   },
-  //   {
-  //     image: 'logothree',
-  //     backgroundColor: '#FFD700',
-  //     name: 'adidas',
-  //     disc: 'Adidas',
-  //     bgcolor: '#FFF3B3',
-  //     btnColor: '#FFD703',
-  //   },
-  //   {
-  //     image: 'channal',
-  //     backgroundColor: '#FFD700',
-  //     name: 'channal',
-  //     disc: 'Channal',
-  //     bgcolor: '#FFF3B3',
-  //     btnColor: '#FFD703',
-  //   },
-  // ]);
 
   const renderItem = ({item, index}) => {
     return (
       <View style={[styles.card]} key={index}>
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate('ExibitoeDetail')}
-        style={styles.cardImgWrapper}>
-        <Image
-          source={{uri:item?.image_name}}
-          resizeMode="contain"
-          style={styles.cardImg}
-        />
-      </TouchableOpacity>
-      <View
-        style={[styles.cardInfo, {backgroundColor:'#F9E79F'}]}>
-        <Text style={styles.cardTitle}>{item?.speaker_name}</Text>
-        <View style={{marginTop: hp(4), flexDirection: 'row'}}>
-          {/* <ExibitorBtn /> */}
-          <View style={{flex: 0.5}}></View>
-          <TouchableOpacity
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('ExibitoeDetail', {item})}
+          style={styles.cardImgWrapper}>
+          <Image
+            source={{uri: item?.image_name}}
+            resizeMode="contain"
+            style={styles.cardImg}
+          />
+        </TouchableOpacity>
+        <View style={[styles.cardInfo, {backgroundColor: '#F9E79F'}]}>
+          <Text style={styles.cardTitle}>{item?.speaker_name}</Text>
+          <View style={{marginTop: hp(4), flexDirection: 'row'}}>
+            {/* <ExibitorBtn /> */}
+            <View style={{flex: 0.5}}></View>
+            {/* <TouchableOpacity
             onPress={() => props.navigation.navigate('Sponsor')}
             style={{
               flex: 0.5,
@@ -194,10 +101,10 @@ const Exibitor = props => {
                 Sponsors
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          </View>
         </View>
       </View>
-    </View>
     );
   };
 
@@ -208,15 +115,28 @@ const Exibitor = props => {
         translucent
         backgroundColor="transparent"
       />
-       <Modal
+      <Modal
         visible={speakerData?.isLoading}
         transparent={true}
-        animationType="fade"
-      >
-        <View style={{flex:1,justifyContent: 'center', alignItems: 'center',backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-        <View style={{width:wp(25),height:hp(12.5),backgroundColor: 'white',borderRadius:hp(1),justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator size="large" color="#cdcdcd" />
-        </View>
+        animationType="fade">
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <View
+            style={{
+              width: wp(25),
+              height: hp(12.5),
+              backgroundColor: 'white',
+              borderRadius: hp(1),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <ActivityIndicator size="large" color="#cdcdcd" />
+          </View>
         </View>
       </Modal>
       <View style={{flex: 0.1}}>
@@ -226,7 +146,26 @@ const Exibitor = props => {
         />
       </View>
       <View style={{flex: 0.9, marginHorizontal: hp(2.5), marginTop: hp(3)}}>
-      <FlatList
+        {speakerData?.user?.response?.success === 0 && (
+          <View
+            style={{
+              flex: 0.1,
+              height: hp(15),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: colors.grayDescColor,
+                fontSize: hp(2),
+                fontStyle: 'italic',
+                fontFamily: fontFamily.robotoBold,
+              }}>
+              No Data Available.
+            </Text>
+          </View>
+        )}
+        <FlatList
           data={speakerData?.user?.response?.events}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
@@ -284,9 +223,9 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontWeight: 'bold',
-    fontSize:hp(1.8),
+    fontSize: hp(1.8),
     color: colors.descBlack,
-    fontFamily:fontFamily.robotoBold
+    fontFamily: fontFamily.robotoBold,
   },
   cardDetails: {
     fontSize: hp(3),

@@ -187,7 +187,7 @@ const Attendees = props => {
   return (
     <View style={{flex: 1}}>
       <BottomSheet
-        style={{height: hp(100), backgroundColor: '#FFFFFF'}}
+        style={{backgroundColor: '#FFFFFF', marginTop: hp(5)}}
         isVisible={isVisible}>
         <View style={{flex: 0.2, height: hp(10), flexDirection: 'row'}}>
           <View

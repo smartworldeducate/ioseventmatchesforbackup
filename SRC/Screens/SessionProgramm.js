@@ -121,11 +121,11 @@ const SessionProgramm = props => {
           {item.speakers.map((speaker, index) => (
             <View key={index}>
               <TouchableOpacity
-                onPress={() => props.navigation.navigate('Profile')}
+                onPress={() => {}}
                 style={{
                   flex: 1,
                   flexDirection: 'row',
-                  height: hp(7),
+                  height: hp(8.5),
                   borderRadius: hp(1),
                   borderWidth: 0.5,
                   borderColor: '#cdcdcd',
@@ -133,7 +133,7 @@ const SessionProgramm = props => {
                 }}>
                 <View
                   style={{
-                    flex: 0.16,
+                    flex: 0.185,
                     justifyContent: 'center',
                     paddingLeft: hp(0.7),
                     flexDirection: 'row',
@@ -148,7 +148,7 @@ const SessionProgramm = props => {
                       borderRadius: hp(50),
                     }}
                     source={{uri: speaker?.image_name}}
-                    resizeMode="cover"
+                    resizeMode="contain"
                   />
                 </View>
                 <View style={{justifyContent: 'center', flex: 0.64}}>
@@ -158,7 +158,7 @@ const SessionProgramm = props => {
                       paddingLeft: hp(1.5),
                       fontSize: hp(2),
                       fontWeight: '600',
-                      // fontFamily: fontFamily.robotoBold,
+                      fontFamily: fontFamily.robotoBold,
                     }}>
                     {speaker.speaker_name}
                   </Text>
@@ -168,8 +168,10 @@ const SessionProgramm = props => {
                       fontSize: hp(2),
                       paddingLeft: hp(1.5),
                       fontWeight: '300',
-                      // fontFamily: fontFamily.robotoLight,
-                    }}>
+                      fontFamily: fontFamily.robotoLight,
+                    }}
+                    numberOfLines={2}
+                    ellipsizeMode="tail">
                     {speaker?.designation}
                   </Text>
                 </View>
@@ -197,6 +199,42 @@ const SessionProgramm = props => {
               </TouchableOpacity>
             </View>
           ))}
+        </View>
+      );
+    }
+    if (resurces) {
+      return (
+        <View
+          style={{
+            flex: 0.45,
+            flexDirection: 'row',
+            marginTop: hp(0),
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            onPress={() => {}}
+            style={{
+              flex: 0.32,
+              height: hp(13),
+              // backgroundColor: '#2CC2E433',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: hp(0.5),
+              // borderWidth:1,
+              // borderColor:'#cdcdcd'
+            }}>
+            <Image
+              style={{
+                width: '90%',
+                height: '90%',
+                paddingTop: hp(0),
+                borderRadius: hp(50),
+              }}
+              source={{uri: item?.resources?.image_name}}
+              resizeMode="cover"
+            />
+          </TouchableOpacity>
         </View>
       );
     }
@@ -1010,28 +1048,20 @@ const SessionProgramm = props => {
           )}
           {speaker && (
             <View style={{flex: 0.7}}>
-              <View
-                style={{
-                  flex: 0.2,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+              <View style={{flex: 0.2}}>
                 <Text
                   style={{
-                    color: colors.grayDescColor,
-                    fontSize: hp(2.3),
+                    color: colors.blackColor,
+                    fontSize: hp(2.5),
                     fontWeight: '600',
+                    fontFamily: fontFamily.robotoBold,
                   }}>
                   {urlData?.speakers?.length > 0 ? (
                     'Moderator:'
                   ) : (
                     <Text
-                      style={{
-                        color: colors.grayDescColor,
-                        fontSize: hp(2),
-                        fontFamily: fontFamily.robotoMedium,
-                      }}>
-                      No Resources Available
+                      style={{color: colors.grayDescColor, fontSize: hp(2)}}>
+                      No data available
                     </Text>
                   )}
                 </Text>
@@ -1047,133 +1077,47 @@ const SessionProgramm = props => {
           )}
           {resurces && (
             <View style={{flex: 0.7, height: hp(34)}}>
-              {detailData?.user?.response?.resources?.length > 0 ? (
-                <>
-                  <View
+              {urlData?.resources?.image_name !== '' && (
+                <View
+                  style={{
+                    flex: 0.2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
                     style={{
-                      flex: 0.45,
-                      flexDirection: 'row',
-                      marginTop: hp(0),
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      color: colors.blackColor,
+                      fontSize: hp(2.5),
+                      fontWeight: '600',
+                      fontFamily: fontFamily.robotoBold,
                     }}>
-                    <View
-                      style={{
-                        flex: 0.32,
-                        height: hp(13),
-                        backgroundColor: '#2CC2E433',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: hp(0.5),
-                      }}>
-                      <Icon
-                        type="light"
-                        name="file-pdf"
-                        size={hp(5.5)}
-                        color="#832D8E"
-                      />
-                    </View>
-                    <View style={{flex: 0.03, backgroundColor: '#fff'}}></View>
-                    <View
-                      style={{
-                        flex: 0.32,
-                        height: hp(13),
-                        backgroundColor: '#FF8B6633',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: hp(0.5),
-                      }}>
-                      <Icon
-                        type="light"
-                        name="file-word"
-                        size={hp(5.5)}
-                        color="#FF8B66"
-                      />
-                    </View>
-                    <View style={{flex: 0.03, backgroundColor: '#fff'}}></View>
-                    <View
-                      style={{
-                        flex: 0.32,
-                        height: hp(13),
-                        backgroundColor: '#00B6AA33',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: hp(0.5),
-                      }}>
-                      <Icon
-                        type="light"
-                        name="image"
-                        size={hp(5.5)}
-                        color="#00B6AA"
-                      />
-                    </View>
-                  </View>
-                  <View style={{flex: 0.02, backgroundColor: '#fff'}}></View>
-                  <View style={{flex: 0.45, flexDirection: 'row'}}>
-                    <View
-                      style={{
-                        flex: 0.32,
-                        height: hp(13),
-                        backgroundColor: '#00B6AA33',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: hp(0.5),
-                      }}>
-                      <Icon
-                        type="light"
-                        name="image"
-                        size={hp(5.5)}
-                        color="#00B6AA"
-                      />
-                    </View>
-                    <View style={{flex: 0.03}}></View>
-                    <View
-                      style={{
-                        flex: 0.32,
-                        height: hp(13),
-                        backgroundColor: '#2CC2E433',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: hp(0.5),
-                      }}>
-                      <Icon
-                        type="light"
-                        name="file-pdf"
-                        size={hp(5.5)}
-                        color="#832D8E"
-                      />
-                    </View>
-                    <View style={{flex: 0.03}}></View>
-                    <View
-                      style={{
-                        flex: 0.32,
-                        height: hp(13),
-                        backgroundColor: '#FF8B6633',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: hp(0.5),
-                      }}>
-                      <Icon
-                        type="light"
-                        name="file-word"
-                        size={hp(5.5)}
-                        color="#FF8B66"
-                      />
-                    </View>
-                  </View>
-                </>
-              ) : (
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                    Resurces
+                  </Text>
+                </View>
+              )}
+              {urlData?.resources?.image_name == '' && (
+                <View
+                  style={{
+                    flex: 0.2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
                   <Text
                     style={{
                       color: colors.grayDescColor,
                       fontSize: hp(2),
-                      fontFamily: fontFamily.robotoMedium,
+                      fontWeight: '400',
                     }}>
-                    No Resources Available
+                    No data available
                   </Text>
                 </View>
               )}
+
+              <FlatList
+                data={detailData?.user?.response?.detail}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+              />
             </View>
           )}
         </ScrollView>
