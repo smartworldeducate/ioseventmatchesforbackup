@@ -8,7 +8,6 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  ToastAndroid,
   Modal,
   ActivityIndicator,
 } from 'react-native';
@@ -80,18 +79,18 @@ const SigninPassword = props => {
         saveData(verifyUser?.payload?.response);
         props.navigation.navigate('AllEvents');
       } else {
-        ToastAndroid.showWithGravity(
-          verifyUser?.payload?.response?.message,
-          ToastAndroid.LONG,
-          ToastAndroid.CENTER,
-        );
+        // ToastAndroid.showWithGravity(
+        //   verifyUser?.payload?.response?.message,
+        //   ToastAndroid.LONG,
+        //   ToastAndroid.CENTER,
+        // );
       }
     } else {
-      ToastAndroid.showWithGravity(
-        'Password is required',
-        ToastAndroid.LONG,
-        ToastAndroid.CENTER,
-      );
+      // ToastAndroid.showWithGravity(
+      //   'Password is required',
+      //   ToastAndroid.LONG,
+      //   ToastAndroid.CENTER,
+      // );
     }
   };
   // console.log("appInstallVersion==",deviceInfo.appInstallVersion);

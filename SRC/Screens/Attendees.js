@@ -119,16 +119,26 @@ const Attendees = props => {
               height: hp(7),
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: colors.lightBlue,
+              // backgroundColor: colors.lightBlue,
             }}>
-            <Avatar
+               <Image
+              style={{
+                width: '100%',
+                height: '100%',
+                paddingTop: hp(0),
+                borderRadius: hp(50),
+              }}
+              source={{uri: item?.image_name}}
+              resizeMode="contain"
+            />
+            {/* <Avatar
               size="small"
               rounded
               title={avatarInitial}
               onPress={() => console.log('Works!')}
               activeOpacity={0.7}
               titleStyle={{color: '#fff', fontSize: hp(2.5)}}
-            />
+            /> */}
           </View>
         </View>
         <View

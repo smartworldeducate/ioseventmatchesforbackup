@@ -65,7 +65,7 @@ const NextScreen = props => {
         }>
         <View style={styles.slide1}>
           <ImageBackground
-            source={require('../assets/image/firstbaner.png')}
+            source={require('../assets/image/twobaner.jpg')}
             style={{width: '100%', height: '100%'}}
             resizeMode={'contain'}></ImageBackground>
           <View
@@ -85,8 +85,7 @@ const NextScreen = props => {
                 marginTop: hp(4.5),
                 marginHorizontal: hp(2.5),
               }}>
-              <Text style={styles.text}>Explore Upcoming and Nearby</Text>
-              <Text style={styles.text}>Events</Text>
+              <Text style={styles.text}>Empowering Women, Elevating Business.</Text>
             </View>
             <View
               style={{
@@ -99,20 +98,13 @@ const NextScreen = props => {
                 style={{
                   color: '#fff',
                   fontWeight: '400',
-                  fontSize: hp(2),
+                  fontSize: hp(1.8),
                   fontWeight: '400',
+                  textAlign:'center',
                   fontFamily: fontFamily.robotoBold,
                 }}>
-                In publishing and graphic design, Lorem is a
-              </Text>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontWeight: '400',
-                  fontSize: hp(2),
-                  fontFamily: fontFamily.robotoLight,
-                }}>
-                placeholder text commonly{' '}
+                Empowering Women, Elevating Business.
+                Champions women entrepreneurs, driving growth, success, and impactful opportunities.
               </Text>
             </View>
           </View>
@@ -134,7 +126,7 @@ const NextScreen = props => {
         </View>
         <View style={styles.slide2}>
           <ImageBackground
-            source={require('../assets/image/banerfore.png')}
+            source={require('../assets/image/threebaner.jpg')}
             style={{width: '100%', height: '100%'}}
             resizeMode={'contain'}></ImageBackground>
           <View
@@ -155,8 +147,7 @@ const NextScreen = props => {
                 marginTop: hp(-16),
                 marginHorizontal: hp(2.5),
               }}>
-              <Text style={styles.text}>Web Have Modern Events</Text>
-              <Text style={styles.text}>Calendar Feature </Text>
+              <Text style={styles.text}>Driving Opportunity for Women Entrepreneurs.</Text>
             </View>
             <View
               style={{
@@ -165,23 +156,17 @@ const NextScreen = props => {
                 marginTop: hp(4.5),
                 marginHorizontal: hp(2.5),
               }}>
-              <Text
+               <Text
                 style={{
                   color: '#fff',
                   fontWeight: '400',
-                  fontSize: hp(2),
-                  fontFamily: fontFamily.robotoMedium,
-                }}>
-                In publishing and graphic design, Lorem
-              </Text>
-              <Text
-                style={{
-                  color: '#fff',
+                  fontSize: hp(1.8),
                   fontWeight: '400',
-                  fontSize: hp(2),
-                  fontFamily: fontFamily.robotoMedium,
+                  textAlign:'center',
+                  fontFamily: fontFamily.robotoBold,
                 }}>
-                is a placeholder text commonly
+                Driving Opportunity for Women Entrepreneurs.
+                Focuses on creating pathways for growth, success, and lasting impact.
               </Text>
             </View>
           </View>
@@ -203,7 +188,7 @@ const NextScreen = props => {
         </View>
         <View style={styles.slide3}>
           <ImageBackground
-            source={require('../assets/image/bannerthree.png')}
+            source={require('../assets/image/forebaner.jpg')}
             style={{width: '100%', height: '100%'}}
             resizeMode={'contain'}></ImageBackground>
           <View
@@ -224,8 +209,7 @@ const NextScreen = props => {
                 marginTop: hp(-16),
                 marginHorizontal: hp(2.5),
               }}>
-              <Text style={styles.text}>To Look Up More Events or</Text>
-              <Text style={styles.text}>Activities Nearby By Map</Text>
+              <Text style={styles.text}>Empower. Connect. Succeed.</Text>
             </View>
             <View
               style={{
@@ -234,23 +218,17 @@ const NextScreen = props => {
                 marginTop: hp(4.5),
                 marginHorizontal: hp(2.5),
               }}>
-              <Text
+               <Text
                 style={{
                   color: '#fff',
                   fontWeight: '400',
-                  fontSize: hp(2),
-                  fontFamily: fontFamily.robotoMedium,
-                }}>
-                In publishing and graphic design, Lorem is a
-              </Text>
-              <Text
-                style={{
-                  color: '#fff',
+                  fontSize: hp(1.8),
                   fontWeight: '400',
-                  fontSize: hp(2),
-                  fontFamily: fontFamily.robotoMedium,
+                  textAlign:'center',
+                  fontFamily: fontFamily.robotoBold,
                 }}>
-                placeholder text commonly
+                Empower. Connect. Succeed.
+                Emphasizes empowering women, fostering connections, and driving entrepreneurial success and growth.
               </Text>
             </View>
           </View>
@@ -295,5 +273,6 @@ const styles = StyleSheet.create({
     fontSize: hp(2.5),
     fontWeight: '600',
     fontFamily: fontFamily.robotoBold,
+    textAlign:'center'
   },
 });

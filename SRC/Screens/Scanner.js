@@ -1,38 +1,69 @@
-import {
-  View,
-  Text,
-  Modal,
-  ActivityIndicator,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import Icon from 'react-native-fontawesome-pro';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { View, Text, Modal, ActivityIndicator, TouchableOpacity, Alert, Linking } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import Icon from 'react-native-fontawesome-pro';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import MainHeader from '../Components/Headers/MainHeader';
-import {scanerPostHandler} from '../features/scanerpostdata/scanerPostSlice';
+import { scanerPostHandler } from '../features/scanerpostdata/scanerPostSlice';
 import fontFamily from '../Styles/fontFamily';
-import {useFocusEffect} from '@react-navigation/native';
-const Scanner = props => {
+
+const Scanner = (props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState('');
-  const [close, setClose] = useState(false);
-  const scanPostData = useSelector(state => state.scanPostState);
-  // console.log('scanPostData===', scanPostData?.user?.response?.message);
+  const [modelView, setModelView] = useState(false);
+  const scanPostData = useSelector((state) => state.scanPostState);
+  // console.log("scanpost data===", scanPostData);
   const [state, setState] = useState({
     scan: true,
     ScanResult: false,
     result: '',
   });
-  const {scan, ScanResult, result} = state;
+  const { scan, ScanResult, result } = state;
   const scanner = useRef(null);
 
+  // Request camera permission
+  const requestCameraPermission = async () => {
+    const result = await request(PERMISSIONS.IOS.CAMERA);
+
+    switch (result) {
+      case RESULTS.GRANTED:
+        console.log('Camera permission granted');
+        break;
+      case RESULTS.DENIED:
+        console.log('Camera permission denied but requestable');
+        Alert.alert(
+          'Permission Required',
+          'Camera access is required to scan QR codes. Please enable camera permission in the app settings.',
+          [{ text: 'OK', onPress: () => props.navigation.goBack() }]
+        );
+        break;
+      case RESULTS.BLOCKED:
+        console.log('Camera permission is blocked and not requestable');
+        Alert.alert(
+          'Permission Blocked',
+          'Camera access is blocked. Please enable camera permission in the app settings.',
+          [{ text: 'OK', onPress: () => props.navigation.goBack() }]
+        );
+        break;
+      case RESULTS.UNAVAILABLE:
+        console.log('Camera permission is unavailable on this device');
+        Alert.alert(
+          'Not Available',
+          'Camera is not available on this device.',
+          [{ text: 'OK', onPress: () => props.navigation.goBack() }]
+        );
+        break;
+    }
+  };
+
+  // Fetch data from AsyncStorage
   async function getData(key) {
     try {
       const value = await AsyncStorage.getItem(key);
@@ -40,15 +71,6 @@ const Scanner = props => {
         const parsedData = JSON.parse(value);
         setData(parsedData);
         scanAgain();
-        // console.log('user id and event_id===', parsedData);
-        // {"user_id":parsedData.user_id,"event_id":parsedData.event_id,"type_id":1}
-        // dispatch(
-        //   getFavroitAttendeeHandler({
-        //     user_id: parsedData?.event_user_id,
-        //     event_id: parsedData?.event_id,
-        //     admin_id: parsedData?.user_id,
-        //   }),
-        // );
         return parsedData;
       }
     } catch (error) {
@@ -56,107 +78,86 @@ const Scanner = props => {
     }
   }
 
-  const closeAndNavigateHandler = () => {
-    props.navigation.goBack();
-    setClose(false);
-  };
+  // Request permission and load data when screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      requestCameraPermission();
+      getData('userSession');
+    }, [dispatch])
+  );
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     getData('userSession');
-  //   }, [dispatch]),
-  // );
-
+  // Load data on component mount
   useEffect(() => {
-    const cameraHandler = async () => {
-      Alert.alert('QR code scanner is comming soon ', [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
-    };
-    cameraHandler();
-    // getData('userSession');
+    getData('userSession');
   }, []);
 
-  // const onSuccess = async e => {
-  //   // console.log("e data===",e?.data)
-  //   const check = e.data.substring(0, 4);
-  //   setState({
-  //     result: e,
-  //     scan: false,
-  //     ScanResult: true,
-  //   });
-  //   setClose(true);
-  //   if (check === 'http') {
-  //     Linking.openURL(e.data).catch(err =>
-  //       console.error('An error occured', err),
-  //     );
-  //   } else {
-  //     dispatch(
-  //       scanerPostHandler({
-  //         user_id: data?.event_user_id,
-  //         event_id: data?.event_id,
-  //         admin_id: data?.user_id,
-  //         qr_code: e?.data,
-  //       }),
-  //     );
+  // Handle QR code scan success
+  const onSuccess = async (e) => {
+    const check = e.data.substring(0, 4);
+    setState({
+      result: e,
+      scan: false,
+      ScanResult: true,
+    });
 
-  //     setState({
-  //       result: e.data,
-  //       scan: false,
-  //       ScanResult: true,
-  //     });
-  //     // const catData = await dispatch(
-  //     //   getSingleTag({employee_id: localData?.EMPLOYEE_ID}),
-  //     // );
-  //     // await setTagData(catData?.payload?.data);
-  //     // setVisible(false);
-  //     // console.log('scan data', e.data);
-  //     // setModalState(true);
-  //   }
-  // };
+    if (check === 'http') {
+      Linking.openURL(e.data).catch((err) =>
+        console.error('An error occurred', err)
+      );
+    } else {
+      dispatch(
+        scanerPostHandler({
+          user_id: data?.event_user_id,
+          event_id: data?.event_id,
+          admin_id: data?.user_id,
+          qr_code: e?.data,
+        })
+      );
 
-  // const activeQR = e => {
-  //   setState({
-  //     scan: true,
-  //   });
-  // };
+      setState({
+        result: e.data,
+        scan: false,
+        ScanResult: true,
+      });
+      setModelView(true);
 
-  // const scanAgain = () => {
-  //   setState({
-  //     scan: true,
-  //     ScanResult: false,
-  //   });
-  //   // addCode(state.result);
-  // };
-
-  const handleQrcode = () => {
-    // setShow(true)
-    setVisible(true);
-    activeQR('active qr');
+    }
   };
 
-  const handleReset = () => {
-    setState({scan: false});
-    setVisible(false);
+  const closeAndNavigateHandler = () => {
+    props.navigation.goBack();
+    setModelView(false);
   };
+
+  const activeQR = (e) => {
+    setState({
+      scan: true,
+    });
+  };
+
+  const scanAgain = () => {
+    setState({
+      scan: true,
+      ScanResult: false,
+    });
+  };
+
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
+      {/* Loading Indicator */}
       <Modal
         visible={scanPostData?.isLoading}
         transparent={true}
-        animationType="fade">
+        animationType="fade"
+      >
         <View
           style={{
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          }}>
+          }}
+        >
           <View
             style={{
               width: wp(25),
@@ -165,19 +166,27 @@ const Scanner = props => {
               borderRadius: hp(1),
               justifyContent: 'center',
               alignItems: 'center',
-            }}>
+            }}
+          >
             <ActivityIndicator size="large" color="#cdcdcd" />
           </View>
         </View>
       </Modal>
-      <Modal visible={close} transparent={true} animationType="fade">
+
+      {/* QR Scan Result Modal */}
+      {modelView &&  <Modal
+        visible={modelView}
+        transparent={true}
+        animationType="fade"
+      >
         <View
           style={{
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          }}>
+          }}
+        >
           <View
             style={{
               width: wp(60),
@@ -186,19 +195,18 @@ const Scanner = props => {
               borderRadius: hp(1),
               justifyContent: 'center',
               alignItems: 'center',
-            }}>
-            {/* <Text style={{color:'red'}}>{state?.result}</Text> */}
-
+            }}
+          >
             <Text
               style={{
                 color: '#000',
                 fontSize: hp(2),
                 fontFamily: fontFamily.robotoMedium,
                 fontWeight: '400',
-              }}>
+              }}
+            >
               {scanPostData?.user?.response?.message}
             </Text>
-            {/* <ActivityIndicator size="large" color="#cdcdcd" /> */}
             <TouchableOpacity
               onPress={closeAndNavigateHandler}
               style={{
@@ -210,49 +218,107 @@ const Scanner = props => {
                 alignItems: 'center',
                 position: 'relative',
                 top: hp(7),
-              }}>
-              {/* <Icon
-                  type="light"
-                  name="xmark"
-                  size={hp(1.5)}
-                  color="#fff"
-                /> */}
+              }}
+            >
               <Text
                 style={{
                   color: '#fff',
                   fontSize: hp(2),
                   fontFamily: fontFamily.robotoMedium,
                   fontWeight: '400',
-                }}>
+                }}
+              >
                 OK
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
-      <View style={{flex: 0.1}}>
+      </Modal>}
+     
+
+      {/* Header */}
+      <View style={{ flex: 0.1 }}>
         <MainHeader
           text={'Scanner'}
           onpressBtn={() => props.navigation.goBack()}
         />
       </View>
-      {/* <View style={{flex: 0.9}}>
+
+      {/* QR Code Scanner */}
+      <View style={{ flex: 0.9 }}>
+      {modelView && (
+         <View
+         style={{
+           flex: 1,
+           justifyContent: 'center',
+           alignItems: 'center',
+          //  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+         }}
+       >
+         <View
+           style={{
+             width: wp(60),
+             height: hp(30),
+             backgroundColor: 'white',
+             borderRadius: hp(1),
+             justifyContent: 'center',
+             alignItems: 'center',
+           }}
+         >
+           <Text
+             style={{
+               color: '#000',
+               fontSize: hp(2),
+               fontFamily: fontFamily.robotoMedium,
+               fontWeight: '400',
+             }}
+           >
+             {scanPostData?.user?.response?.message}
+           </Text>
+           <TouchableOpacity
+             onPress={closeAndNavigateHandler}
+             style={{
+               backgroundColor: '#832D8E',
+               borderRadius: hp(50),
+               width: hp(10),
+               height: hp(4.5),
+               justifyContent: 'center',
+               alignItems: 'center',
+               position: 'relative',
+               top: hp(7),
+             }}
+           >
+             <Text
+               style={{
+                 color: '#fff',
+                 fontSize: hp(2),
+                 fontFamily: fontFamily.robotoMedium,
+                 fontWeight: '400',
+               }}
+             >
+               OK
+             </Text>
+           </TouchableOpacity>
+         </View>
+       </View>
+      )}
         {ScanResult && (
-          <>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                margin: hp(2),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}></View>
-          </>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              margin: hp(2),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {/* Optional scan again button can be added here */}
+          </View>
         )}
 
         {scan && (
           <QRCodeScanner
-            cameraStyl={{height: hp(120)}}
+            cameraStyl={{ height: hp(120) }}
             reactivate={true}
             showMarker={true}
             ref={scanner}
@@ -263,11 +329,68 @@ const Scanner = props => {
                   paddingTop: hp(8),
                   flexDirection: 'row',
                   marginTop: hp(8),
-                }}></View>
+                }}
+              ></View>
             }
           />
         )}
-      </View> */}
+      </View>
+      {/* {modelView && (
+         <View
+         style={{
+           flex: 1,
+           justifyContent: 'center',
+           alignItems: 'center',
+           backgroundColor: 'rgba(0, 0, 0, 0.5)',
+         }}
+       >
+         <View
+           style={{
+             width: wp(60),
+             height: hp(30),
+             backgroundColor: 'white',
+             borderRadius: hp(1),
+             justifyContent: 'center',
+             alignItems: 'center',
+           }}
+         >
+           <Text
+             style={{
+               color: '#000',
+               fontSize: hp(2),
+               fontFamily: fontFamily.robotoMedium,
+               fontWeight: '400',
+             }}
+           >
+             {scanPostData?.user?.response?.message}
+           </Text>
+           <TouchableOpacity
+             onPress={closeAndNavigateHandler}
+             style={{
+               backgroundColor: '#832D8E',
+               borderRadius: hp(50),
+               width: hp(10),
+               height: hp(4.5),
+               justifyContent: 'center',
+               alignItems: 'center',
+               position: 'relative',
+               top: hp(7),
+             }}
+           >
+             <Text
+               style={{
+                 color: '#fff',
+                 fontSize: hp(2),
+                 fontFamily: fontFamily.robotoMedium,
+                 fontWeight: '400',
+               }}
+             >
+               OK
+             </Text>
+           </TouchableOpacity>
+         </View>
+       </View>
+      )} */}
     </View>
   );
 };

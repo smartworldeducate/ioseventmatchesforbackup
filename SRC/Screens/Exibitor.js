@@ -5,7 +5,7 @@ import {
 } from 'react-native-responsive-screen';
 import fontFamily from '../Styles/fontFamily';
 import colors from '../Styles/colors';
-import {speakerHandler} from '../features/speaker/speakerSlice';
+import {exibitorHandler} from '../features/exibitor/exibitorSlice';
 import {
   View,
   Text,
@@ -24,7 +24,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 const Exibitor = props => {
   const dispatch = useDispatch();
-  const speakerData = useSelector(state => state.speakerState);
+  const speakerData = useSelector(state => state.exibitorState);
   // console.log("speakerDa==",speakerData?.user?.response);
   async function getData(key) {
     try {
@@ -36,8 +36,8 @@ const Exibitor = props => {
         // setData(parsedData);
         // {"user_id":parsedData.user_id,"event_id":parsedData.event_id,"type_id":1}
         dispatch(
-          speakerHandler({
-            user_id: parsedData.user_id,
+          exibitorHandler({
+            user_id: parsedData.event_user_id,
             event_id: parsedData.event_id,
             type_id: 3,
           }),

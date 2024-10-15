@@ -428,6 +428,25 @@ import {
         </View>
   
         <View style={{flex: 0.8, marginHorizontal: hp(2.5)}}>
+        {shortListAttendeeData?.user?.response?.data?.length < 1 && (
+          <View
+            style={{
+              flex: 0.1,
+              height: hp(15),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: colors.grayDescColor,
+                fontSize: hp(2),
+                fontStyle: 'italic',
+                fontFamily: fontFamily.robotoBold,
+              }}>
+              No Data Available.
+            </Text>
+          </View>
+        )}
         <FlatList
           data={filteredData && filteredData}
           renderItem={renderItem}

@@ -397,6 +397,8 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
+  - react-native-version-check (3.4.7):
+    - React-Core
   - react-native-viewpager (5.0.11):
     - React-Core
   - react-native-webview (13.3.1):
@@ -590,6 +592,7 @@ DEPENDENCIES:
   - react-native-print (from `../node_modules/react-native-print`)
   - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-version-check (from `../node_modules/react-native-version-check`)
   - "react-native-viewpager (from `../node_modules/@react-native-community/viewpager`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -710,6 +713,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-render-html"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-version-check:
+    :path: "../node_modules/react-native-version-check"
   react-native-viewpager:
     :path: "../node_modules/@react-native-community/viewpager"
   react-native-webview:
@@ -824,6 +829,7 @@ SPEC CHECKSUMS:
   react-native-print: f704aef52d931bfce6d1d84351dbb5232d7ecb89
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: eb0b9284834d1173db8de53ef32dde3d608ee533
+  react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
   react-native-viewpager: b99b53127d830885917ef84809c5065edd614a78
   react-native-webview: c2b70afb1d910cdd8810375aecc6c2894e2ba061
   React-perflogger: 48c6b363e867d64b682e84f80ca45636bd65e19c
@@ -848,7 +854,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 1a2edf4dd8a2255ab25aa27afb90bb755cf8d07a
   RNGestureHandler: dec4645026e7401a0899f2846d864403478ff6a5
   RNGoogleSignin: ccaa4a81582cf713eea562c5dd9dc1961a715fd0
-  RNPermissions: 294531ede5a64d1528463e88fffef05675842042
+  RNPermissions: 5a2dafe37c8e0a3fa1d6e0783a1490b1b7fd92d6
   RNReanimated: 38e8c4a0232f4596ba46b547ae8b9a8192322dea
   RNScreens: 50ffe2fa2342eabb2d0afbe19f7c1af286bc7fb3
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
@@ -857,6 +863,6 @@ SPEC CHECKSUMS:
   Yoga: 6c8252e38d65aa387daee699eacf027e055e0b31
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: cbbefb3e752de601f4fa5ebb32bf8add9f36a524
+PODFILE CHECKSUM: 2f815f96044ac3a44061d7499c7bfded2ddad64a
 
 COCOAPODS: 1.15.2

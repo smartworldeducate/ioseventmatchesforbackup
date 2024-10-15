@@ -65,7 +65,7 @@ const Profile = props => {
         const parsedData = JSON.parse(value);
         setAdminData(parsedData);
         // dispatch(speakerDetailHandler({"user_id":parsedData?.login_id}));
-        dispatch(speakerDetailHandler({user_id: parsedData?.login_id}));
+        dispatch(speakerDetailHandler({user_id: parsedData?.event_user_id}));
       }
     } catch (error) {
       console.error('Error retrieving data:', error);
@@ -150,7 +150,7 @@ const Profile = props => {
               borderBottomLeftRadius: hp(2),
               borderTopLeftRadius: hp(2),
             }}
-            source={{uri: 'banertwo'}}
+            source={{uri:item ? item?.image_name : 'banertwo'}}
             resizeMode="contain"
           />
         </View>
@@ -304,7 +304,7 @@ const Profile = props => {
               borderBottomLeftRadius: hp(2),
               borderTopLeftRadius: hp(2),
             }}
-            source={{uri: 'banertwo'}}
+            source={{uri: item ? item?.image_name : 'banertwo'}}
             resizeMode="contain"
           />
         </View>
@@ -378,7 +378,7 @@ const Profile = props => {
                 </TouchableOpacity>
               </View>
               <View style={{flex: 0.1}}></View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => registerActivityFunction(item)}
                 style={{
                   justifyContent: 'center',
@@ -402,7 +402,7 @@ const Profile = props => {
                   }}>
                   {item?.is_registered == 'Y' ? 'Un-Register' : 'Register'}
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
@@ -493,19 +493,19 @@ const Profile = props => {
               flex: 0.31,
               height: hp(14),
               borderRadius: hp(50),
-              backgroundColor: colors.lightBlue,
+              // backgroundColor: colors.lightBlue,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Avatar
+            {/* <Avatar
               size="large"
               rounded
               title={avatarInitial}
               onPress={() => console.log('Works!')}
               activeOpacity={0.7}
               titleStyle={{color: '#fff', fontSize: hp(5.5)}}
-            />
-            {/* <Image
+            /> */}
+            <Image
               style={{
                 width: '100%',
                 height: '100%',
@@ -514,7 +514,7 @@ const Profile = props => {
               }}
               source={{uri:item?.image_name}}
               resizeMode="contain"
-            /> */}
+            />
           </View>
 
           <View style={{flex: 0.3}}></View>

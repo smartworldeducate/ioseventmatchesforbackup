@@ -44,48 +44,48 @@ import {
     // console.log("activeTab===",activeTab);
   
   
-    async function getSessionData(key) {
-      try {
-        const value = await AsyncStorage.getItem(key);
-        if (value !== null) {
-          // console.log('Data retrieved successfully:', value);
-          const parsedData = JSON.parse(value);
-          setAdminData(parsedData);
-          dispatch(speakerDetailHandler({"event_id":parsedData?.event_id,"speaker_id":item?.speaker_id}));
-        } 
-      } catch (error) {
-        console.error('Error retrieving data:', error);
-      }
-    }
+    // async function getSessionData(key) {
+    //   try {
+    //     const value = await AsyncStorage.getItem(key);
+    //     if (value !== null) {
+    //       // console.log('Data retrieved successfully:', value);
+    //       const parsedData = JSON.parse(value);
+    //       setAdminData(parsedData);
+    //       dispatch(speakerDetailHandler({"event_id":parsedData?.event_id,"speaker_id":item?.speaker_id}));
+    //     } 
+    //   } catch (error) {
+    //     console.error('Error retrieving data:', error);
+    //   }
+    // }
   
-    useEffect(() => {
-      getSessionData('userSession');
-    }, []);
+    // useEffect(() => {
+    //   getSessionData('userSession');
+    // }, []);
   
-    const getTabData = (tabName) => {
-      // Fetch data from your detail object based on the tabName
-      return speakerDetailData?.user?.response?.detail?.[tabName];
-    }
-    const handleTabClick = (tabName) => {
-      console.log("activeTab===",tabName);
-      setActiveTab(tabName);
-      // Fetch data for the selected tab
-      const newData = getTabData(tabName); // Implement this function to fetch data based on tabName
-      setTabData(newData);
-    }
+    // const getTabData = (tabName) => {
+    //   // Fetch data from your detail object based on the tabName
+    //   return speakerDetailData?.user?.response?.detail?.[tabName];
+    // }
+    // const handleTabClick = (tabName) => {
+    //   console.log("activeTab===",tabName);
+    //   setActiveTab(tabName);
+    //   // Fetch data for the selected tab
+    //   const newData = getTabData(tabName); // Implement this function to fetch data based on tabName
+    //   setTabData(newData);
+    // }
 
-    const openUrlHandler=(item)=>{
-      if(item !==''){
-        Linking.openURL(item);
-      }else{
-        ToastAndroid.showWithGravity(
-         "No Url found",
-          ToastAndroid.LONG,
-          ToastAndroid.CENTER,
-        );
-      }
+    // const openUrlHandler=(item)=>{
+    //   if(item !==''){
+    //     Linking.openURL(item);
+    //   }else{
+    //     ToastAndroid.showWithGravity(
+    //      "No Url found",
+    //       ToastAndroid.LONG,
+    //       ToastAndroid.CENTER,
+    //     );
+    //   }
       
-    }
+    // }
   
     const tagsStyles = {
       body: {
@@ -203,7 +203,7 @@ import {
                   contentWidth={400}
                   source={{
                     html: item
-                      ? '<p>' + speakerDetailData?.user?.response?.events[0]?.speaker_detail + '</p>'
+                      ? '<p>' + item?.speaker_detail + '</p>'
                       : '',
                   }}
                   stylesheet={{color: 'blue'}}
@@ -212,7 +212,7 @@ import {
                 </ScrollView>
         </View>
   
-        <View style={{flex: 0.1, backgroundColor: '#fff'}}>
+        {/* <View style={{flex: 0.1, backgroundColor: '#fff'}}>
           <View
             style={{
               justifyContent: 'center',
@@ -249,7 +249,7 @@ import {
               />
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
       </View>
     );
   };

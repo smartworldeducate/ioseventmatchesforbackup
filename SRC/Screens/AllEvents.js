@@ -97,6 +97,10 @@ const AllEvents = props => {
     }, []),
   );
 
+  useEffect(()=>{
+    geLogintData('loginData');
+  },[])
+
   useEffect(() => {
     geLogintData('loginData');
     removeSaveDataFromAsyncStorage('userSession');
@@ -131,6 +135,7 @@ const AllEvents = props => {
           login_id: loginData?.user_id,
           is_macher: item?.is_matchmaker,
           event_user_id: event_user_id,
+          header_image:item?.header_image
         });
         await saveActivityData({activity: item?.activities});
       }

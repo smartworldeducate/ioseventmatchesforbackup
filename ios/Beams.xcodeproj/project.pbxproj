@@ -529,8 +529,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T92ZTAD4UC;
+				DEVELOPMENT_TEAM = 2MNE5LP9MT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beams/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "WBEC WEST";
@@ -539,13 +541,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.09;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ccsclientwbec;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ccsclientwbecwest;
 				PRODUCT_NAME = Beams;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -558,8 +562,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T92ZTAD4UC;
+				DEVELOPMENT_TEAM = 2MNE5LP9MT;
 				INFOPLIST_FILE = Beams/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "WBEC WEST";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
@@ -567,13 +573,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.09;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ccsclientwbec;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ccsclientwbecwest;
 				PRODUCT_NAME = Beams;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

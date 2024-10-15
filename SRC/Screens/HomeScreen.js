@@ -17,6 +17,8 @@ import {
   ActivityIndicator,
   ActivityIndicatorBase,
   ToastAndroid,
+  Alert,
+  Linking
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -31,11 +33,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {registerActivityHandler} from '../features/registeractivity/registerActivitySlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {activityHomeHandler} from '../features/eventactivityhome/hactivitySlice';
+import VersionCheck from 'react-native-version-check';
 const HomeScreen = props => {
   const {apiIdentifier} = props.route?.params || {};
   // console.log("apiIdentifier==",apiIdentifier);
   const dispatch = useDispatch();
   const activityData = useSelector(state => state.acitivityState);
+  const appVersionData = useSelector(state => state.appVersionState);
+
   const registerActivityData = useSelector(
     state => state.registerActivityState,
   );
@@ -116,6 +121,33 @@ const HomeScreen = props => {
       );
     }
   };
+
+  useEffect(() => {
+    const checkForUpdate = async () => {
+      const apiVersion = appVersionData?.user?.response?.version;
+      const appVersion = '1.07';
+
+      if (apiVersion >= appVersion) {
+        Alert.alert(
+          'Update Required',
+          'Please update the app to the latest version to continue.',
+          [
+            {
+              text: 'Update Now',
+              onPress: () => {
+                VersionCheck.getStoreUrl({ appID: 'com.ccsclientwbecwest' }).then(url => {
+                  Linking.openURL(url);
+                });
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      }
+    };
+
+    checkForUpdate();
+  }, []);
 
   const dayOneHandler = () => {
     setDayOne(true);
@@ -286,7 +318,7 @@ const HomeScreen = props => {
                 </TouchableOpacity>
               </View>
               <View style={{flex: 0.1}}></View>
-              <TouchableOpacity
+              {item?.show_reg_button=='Y' && (<TouchableOpacity
                 onPress={() => registerActivityFunction(item)}
                 style={{
                   justifyContent: 'center',
@@ -310,7 +342,8 @@ const HomeScreen = props => {
                   }}>
                   {item?.is_registered == 'Y' ? 'Un-Register' : 'Register'}
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity>)}
+              
             </View>
           </View>
         </View>
@@ -329,7 +362,7 @@ const HomeScreen = props => {
         translucent
         backgroundColor="transparent"
       />
-      <Modal
+      {/* <Modal
         visible={activityData?.isLoading || registerActivityData?.isLoading}
         transparent={true}
         animationType="fade">
@@ -352,7 +385,7 @@ const HomeScreen = props => {
             <ActivityIndicator size="large" color="#cdcdcd" />
           </View>
         </View>
-      </Modal>
+      </Modal> */}
       <View style={{flex: 0.25}}>
         <HeaderTop
           onPressIcon={() => navigation.openDrawer()}
@@ -362,7 +395,7 @@ const HomeScreen = props => {
       <View style={{flex: 0.3}}>
         <Image
           style={{width: '100%', height: '90%', borderRadius: hp(1.5)}}
-          source={require('../assets/image/groupfore.png')}
+          source={{uri:adminData ? adminData?.header_image:''}}
           resizeMode="cover"
         />
       </View>

@@ -16,7 +16,6 @@ import {Image} from 'react-native';
 import fontFamily from '../Styles/fontFamily';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import LinearGradient from 'react-native-linear-gradient';
-import {getAppVersionHandler} from '../features/getappversion/getAppVersionSlice';
 import {getPrintBadgeHandler} from '../features/printerbadge/printerBadgeSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {Avatar} from 'react-native-elements';
@@ -43,13 +42,6 @@ const CustomDrawer = ({navigation}) => {
         const parsedData = JSON.parse(value);
         // console.log("login data===",parsedData);
         setData(parsedData);
-        dispatch(
-          getPrintBadgeHandler({
-            user_id: parsedData?.event_user_id,
-            event_id: parsedData?.event_id,
-            admin_id: parsedData?.user_id,
-          }),
-        );
         const firstName = parsedData?.first_name || '';
         const lastName = parsedData?.last_name || '';
 
@@ -76,6 +68,13 @@ const CustomDrawer = ({navigation}) => {
         // console.log('Data retrieved successfully:', value);
         const parsedData = JSON.parse(value);
         setAdminData(parsedData);
+        dispatch(
+          getPrintBadgeHandler({
+            user_id: parsedData?.event_user_id,
+            event_id: parsedData?.event_id,
+            admin_id: parsedData?.user_id,
+          }),
+        );
       }
     } catch (error) {
       console.error('Error retrieving data:', error);
@@ -83,7 +82,7 @@ const CustomDrawer = ({navigation}) => {
   }
 
   useEffect(() => {
-    dispatch(getAppVersionHandler());
+    // dispatch(getAppVersionHandler());
     // dispatch(getPrintBadgeHandler());
     getData('loginData');
     getSessionData('userSession');
@@ -198,25 +197,7 @@ const CustomDrawer = ({navigation}) => {
               </View>
             </TouchableOpacity>
           </View>
-          {/* <View style={[styles.listnameStyle, {marginTop: hp(1.5)}]}>
-            <TouchableOpacity onPress={() => navigatorHandler('Events')}>
-              <View style={{flexDirection: 'row', marginLeft: hp(3)}}>
-                <View style={{}}>
-                  <Icon
-                    type="light"
-                    name="calendar-lines-pen"
-                    size={hp(2.5)}
-                    color={'#fff'}
-                  />
-                </View>
-                <View>
-                  <Text style={[styles.textlistStyle, {paddingLeft: hp(2)}]}>
-                    Events Info
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View> */}
+          
           <View style={[styles.listnameStyle, {marginTop: hp(1.5)}]}>
             <TouchableOpacity onPress={() => navigatorHandler('Exibitor')}>
               <View style={{flexDirection: 'row', marginLeft: hp(3)}}>
@@ -415,7 +396,7 @@ const CustomDrawer = ({navigation}) => {
               <View>
                 <Text
                   style={{marginLeft: hp(3), fontSize: hp(1.5), color: '#fff'}}>
-                  {appVersionData?.user?.response?.version < '1.03'
+                  {appVersionData?.user?.response?.version >= '1.07'
                     ? appVersionData?.user?.response?.message
                     : ''}
                 </Text>

@@ -5,6 +5,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {getAppVersionHandler} from '../features/getappversion/getAppVersionSlice';
+
 import {
   SafeAreaView,
   StatusBar,
@@ -20,9 +22,10 @@ import {
   CommonActions,
 } from '@react-navigation/native';
 import {color} from '@rneui/base';
-// import LoaderKit from 'react-native-loader-kit';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Splash = props => {
+  const dispatch = useDispatch();
   const [data, setData] = useState(null);
   async function getData(key) {
     try {
@@ -46,6 +49,7 @@ const Splash = props => {
     }
   }
   useEffect(() => {
+    dispatch(getAppVersionHandler());
     getData('loginData');
     // props.navigation.dispatch(StackActions.replace('NextScreen'));
   }, []);
@@ -71,12 +75,6 @@ const Splash = props => {
         </View>
       </View>
       <View style={{flex: 0.3, justifyContent: 'center', alignItems: 'center'}}>
-        {/* <LoaderKit
-          style={{width: 50, height: 50}}
-          name={'BallSpinFadeLoader'}
-          size={60}
-          color={'#832D8E'}
-        /> */}
       </View>
     </SafeAreaView>
   );

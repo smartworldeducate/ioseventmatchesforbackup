@@ -139,7 +139,7 @@ const BottomTabApplication = () => {
         initialParams={{apiIdentifier: 'mySessions'}}
       />
       <Tab.Screen
-        name="Scanner"
+        name="Qrcode"
         component={Scanner}
         options={{
           tabBarIcon: ({color, size, focused}) => (

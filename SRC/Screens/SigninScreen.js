@@ -8,7 +8,6 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  ToastAndroid,
   Modal,
   ActivityIndicator,
   Alert,
@@ -30,6 +29,7 @@ import VersionCheck from 'react-native-version-check';
 const SigninScreen = props => {
   const dispatch = useDispatch();
   const emailData = useSelector(state => state.emailState);
+  const appVersionData = useSelector(state => state.appVersionState);
   const [email, setEmail] = useState('');
   const [data, setData] = useState('');
   const onPressHandler = (fieldName, fieldValue) => {
@@ -50,28 +50,19 @@ const SigninScreen = props => {
       ) {
         props.navigation.navigate('RegisterScreen', {email});
       } else {
-        // props.navigation.navigate("RegisterScreen",{email});
-        ToastAndroid.showWithGravity(
-          verifyEmail?.payload?.response?.message,
-          ToastAndroid.LONG,
-          ToastAndroid.CENTER,
-        );
+       
       }
     } else {
-      ToastAndroid.showWithGravity(
-        'Enter Valid Email is required',
-        ToastAndroid.LONG,
-        ToastAndroid.CENTER,
-      );
+      
     }
   };
 
   useEffect(() => {
     const checkForUpdate = async () => {
-      const currentVersion = '1.02';
-      const latestVersion = '1.03';
+      const apiVersion = appVersionData?.user?.response?.version;
+      const appVersion = '1.07';
 
-      if (latestVersion > currentVersion) {
+      if (apiVersion >= appVersion) {
         Alert.alert(
           'Update Required',
           'Please update the app to the latest version to continue.',
@@ -79,15 +70,13 @@ const SigninScreen = props => {
             {
               text: 'Update Now',
               onPress: () => {
-                VersionCheck.getStoreUrl({appID: 'com.ccsclientwbec'}).then(
-                  url => {
-                    Linking.openURL(url);
-                  },
-                );
+                VersionCheck.getStoreUrl({ appID: 'com.ccsclientwbecwest' }).then(url => {
+                  Linking.openURL(url);
+                });
               },
             },
           ],
-          {cancelable: false},
+          { cancelable: false }
         );
       }
     };

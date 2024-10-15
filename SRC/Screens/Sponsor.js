@@ -20,11 +20,11 @@ import fontFamily from '../Styles/fontFamily';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
-import {speakerHandler} from '../features/speaker/speakerSlice';
+import {sponserHandler} from '../features/sponser/sponserSlice';
 import colors from '../Styles/colors';
 const Sponsor = props => {
   const dispatch = useDispatch();
-  const speakerData = useSelector(state => state.speakerState);
+  const speakerData = useSelector(state => state.sponserState);
   // console.log('sponsor 2===', speakerData?.user?.response);
   async function getData(key) {
     try {
@@ -36,8 +36,8 @@ const Sponsor = props => {
         // setData(parsedData);
         // {"user_id":parsedData.user_id,"event_id":parsedData.event_id,"type_id":1}
         dispatch(
-          speakerHandler({
-            user_id: parsedData.user_id,
+          sponserHandler({
+            user_id: parsedData.event_user_id,
             event_id: parsedData.event_id,
             type_id: 2,
           }),
@@ -61,15 +61,14 @@ const Sponsor = props => {
 
   const renderItem = ({item, index}) => {
     return (
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate('ExibitoeDetail')}
+      <View
         style={[styles.cardImgWrapper]}>
         <Image
           source={{uri: item?.image_name}}
           resizeMode="contain"
           style={styles.cardImg}
         />
-      </TouchableOpacity>
+      </View>
     );
   };
 
